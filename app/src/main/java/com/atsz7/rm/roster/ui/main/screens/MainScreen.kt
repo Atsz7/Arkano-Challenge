@@ -26,7 +26,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
     val mainState by mainViewModel.mainState.collectAsStateWithLifecycle()
     MainScreen(
         mainState = mainState,
-        onRefresh = mainViewModel::onRefresh
+        onRefresh = { mainViewModel.onRefresh() }
     )
 }
 
