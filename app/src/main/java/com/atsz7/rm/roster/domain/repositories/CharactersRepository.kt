@@ -7,5 +7,7 @@ interface CharactersRepository {
 
     fun getCharacters(): Flow<List<Character>>
 
-    suspend fun downloadCharacters(forceRefresh: Boolean)
+    suspend fun hasCachedCharacters(): Boolean
+
+    suspend fun refreshCharacters()
 }

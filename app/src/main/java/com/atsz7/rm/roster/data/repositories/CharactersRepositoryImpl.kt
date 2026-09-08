@@ -23,10 +23,10 @@ class CharactersRepositoryImpl @Inject constructor(
             rows.map { it.toDomain() }
         }
 
-    override suspend fun downloadCharacters(forceRefresh: Boolean) {
+    override suspend fun hasCachedCharacters(): Boolean =
+        charactersDao.getAll().first().isNotEmpty()
 
-        val hasCachedCharacters = charactersDao.getAll().first().isNotEmpty()
-        if (!forceRefresh && hasCachedCharacters) return
+    override suspend fun refreshCharacters() {
 
         // Clearing database
         charactersDao.deleteAll()
