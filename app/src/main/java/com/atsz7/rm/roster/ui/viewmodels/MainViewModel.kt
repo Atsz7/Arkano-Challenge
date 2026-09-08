@@ -42,15 +42,19 @@ class MainViewModel @Inject constructor(
     )
 
     init {
-        onRefresh()
+        download(forceRefresh = false)
     }
 
     fun onRefresh() {
+        download(forceRefresh = true)
+    }
+
+    private fun download(forceRefresh: Boolean) {
         viewModelScope.launch {
             _isRefreshing.value = true
             _isError.value = false
             try {
-                downloadCharactersUseCase()
+                downloadCharactersUseCase(forceRefresh)
             } catch (ex: Exception) {
                 Log.e(javaClass.name, ex.message, ex)
                 _isError.value = true
