@@ -7,10 +7,10 @@ import com.atsz7.rm.roster.domain.usecases.DownloadCharactersUseCase
 import com.atsz7.rm.roster.domain.usecases.GetCharactersUseCase
 import com.atsz7.rm.roster.ui.main.screens.state.MainScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
