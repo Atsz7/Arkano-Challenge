@@ -21,37 +21,45 @@ class MainViewModel @Inject constructor(
     private val downloadCharactersUseCase: DownloadCharactersUseCase
 ) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow(false)
+    private val _isRefreshing = MutableStateFlow(false)
     private val _isError = MutableStateFlow(false)
 
     val mainState: StateFlow<MainScreenState> = combine(
         getCharactersUseCase(),
-        _isLoading,
+        _isRefreshing,
         _isError
-    ) { characters, isLoading, isError ->
+    ) { characters, isRefreshing, isError ->
         when {
             isError -> MainScreenState.Error
-            isLoading -> MainScreenState.Loading
-            else -> MainScreenState.Success(characters)
+            else -> MainScreenState.Success(characters, isRefreshing)
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(
             stopTimeoutMillis = STOP_TIMEOUT_IN_MILLIS
         ),
-        initialValue = MainScreenState.Idle
+        initialValue = MainScreenState.Success(emptyList(), isRefreshing = true)
     )
 
     init {
+        download(forceRefresh = false)
+    }
+
+    fun onRefresh() {
+        download(forceRefresh = true)
+    }
+
+    private fun download(forceRefresh: Boolean) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _isRefreshing.value = true
+            _isError.value = false
             try {
-                downloadCharactersUseCase()
+                downloadCharactersUseCase(forceRefresh)
             } catch (ex: Exception) {
                 Log.e(javaClass.name, ex.message, ex)
                 _isError.value = true
             } finally {
-                _isLoading.value = false
+                _isRefreshing.value = false
             }
         }
     }

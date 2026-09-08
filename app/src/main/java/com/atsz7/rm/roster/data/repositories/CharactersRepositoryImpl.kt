@@ -9,6 +9,7 @@ import com.atsz7.rm.roster.domain.model.Character
 import com.atsz7.rm.roster.domain.repositories.CharactersRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -22,7 +23,14 @@ class CharactersRepositoryImpl @Inject constructor(
             rows.map { it.toDomain() }
         }
 
-    override suspend fun downloadCharacters() {
+    override suspend fun downloadCharacters(forceRefresh: Boolean) {
+
+        val hasCachedCharacters = charactersDao.getAll().first().isNotEmpty()
+        if (!forceRefresh && hasCachedCharacters) return
+
+        // Clearing database
+        charactersDao.deleteAll()
+
         val characters = (MIN_PAGES_TO_DOWNLOAD..MAX_PAGES_TO_DOWNLOAD).flatMap { page ->
             delay(timeMillis = DOWNLOAD_DELAY)
             downloadPage(page)
