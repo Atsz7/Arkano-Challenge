@@ -18,6 +18,7 @@ import com.atsz7.rm.roster.common.ui.theme.RMRosterTheme
 import com.atsz7.rm.roster.domain.model.Character
 import com.atsz7.rm.roster.ui.main.screens.state.MainScreenState
 import com.atsz7.rm.roster.ui.main.viewmodels.MainViewModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -70,7 +71,7 @@ private fun MainScreen(mainState: MainScreenState, onRefresh: () -> Unit) {
 @Composable
 private fun MainContent(
     listState: LazyListState,
-    characters: List<Character>?,
+    characters: ImmutableList<Character>?,
     isError: Boolean,
     onRetryClick: () -> Unit
 ) {
