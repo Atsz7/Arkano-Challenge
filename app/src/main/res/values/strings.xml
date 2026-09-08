@@ -6,4 +6,7 @@
     <string name="main_error_message">Something went wrong. Please try again.</string>
     <string name="main_error_retry_button">Retry</string>
 
+    <!-- Main scroll to top button -->
+    <string name="main_scroll_to_top_cd">Scroll to top</string>
+
 </resources>
