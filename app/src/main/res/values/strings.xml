@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RM Roster</string>
+
+    <!-- Main error section -->
+    <string name="main_error_icon_cd">Error</string>
+    <string name="main_error_message">Something went wrong. Please try again.</string>
+    <string name="main_error_retry_button">Retry</string>
+
 </resources>

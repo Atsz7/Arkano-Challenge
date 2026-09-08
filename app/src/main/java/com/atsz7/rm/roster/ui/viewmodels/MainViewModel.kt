@@ -1,10 +1,11 @@
-package com.atsz7.rm.roster.ui
+package com.atsz7.rm.roster.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.atsz7.rm.roster.domain.usecases.DownloadCharactersUseCase
 import com.atsz7.rm.roster.domain.usecases.GetCharactersUseCase
+import com.atsz7.rm.roster.ui.screens.state.MainScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
