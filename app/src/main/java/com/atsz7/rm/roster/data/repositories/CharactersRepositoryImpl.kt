@@ -7,6 +7,8 @@ import com.atsz7.rm.roster.data.mappers.toDomain
 import com.atsz7.rm.roster.data.mappers.toEntity
 import com.atsz7.rm.roster.domain.model.Character
 import com.atsz7.rm.roster.domain.repositories.CharactersRepository
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -18,15 +20,15 @@ class CharactersRepositoryImpl @Inject constructor(
     private val charactersDao: CharactersDao
 ) : CharactersRepository {
 
-    override fun getCharacters(): Flow<List<Character>> =
+    override fun getCharacters(): Flow<ImmutableList<Character>> =
         charactersDao.getAll().map { rows ->
-            rows.map { it.toDomain() }
+            rows.map { it.toDomain() }.toImmutableList()
         }
 
-    override suspend fun downloadCharacters(forceRefresh: Boolean) {
+    override suspend fun hasCachedCharacters(): Boolean =
+        charactersDao.getAll().first().isNotEmpty()
 
-        val hasCachedCharacters = charactersDao.getAll().first().isNotEmpty()
-        if (!forceRefresh && hasCachedCharacters) return
+    override suspend fun refreshCharacters() {
 
         // Clearing database
         charactersDao.deleteAll()

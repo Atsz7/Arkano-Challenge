@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.screens
+package com.atsz7.rm.roster.ui.main.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +19,10 @@ import com.atsz7.rm.roster.common.ui.extensions.statusToBadge
 import com.atsz7.rm.roster.common.ui.theme.RMRosterTheme
 import com.atsz7.rm.roster.common.ui.utils.getShapeByIndex
 import com.atsz7.rm.roster.domain.model.Character
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-fun LazyListScope.charactersListSection(characters: List<Character>) {
+fun LazyListScope.charactersListSection(characters: ImmutableList<Character>) {
 
     itemsIndexed(
         items = characters,
@@ -55,7 +57,7 @@ fun LazyListScope.charactersListSection(characters: List<Character>) {
     }
 }
 
-private val previewCharacters = listOf(
+private val previewCharacters: ImmutableList<Character> = persistentListOf(
     Character(
         id = 1,
         name = "Rick Sanchez",
