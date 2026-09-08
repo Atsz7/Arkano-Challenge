@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.screens
+package com.atsz7.rm.roster.ui.main.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

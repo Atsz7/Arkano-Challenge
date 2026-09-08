@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.screens.state
+package com.atsz7.rm.roster.ui.main.screens.state
 
 import com.atsz7.rm.roster.domain.model.Character
 

@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.screens
+package com.atsz7.rm.roster.ui.main.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,8 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atsz7.rm.roster.common.ui.theme.RMRosterTheme
-import com.atsz7.rm.roster.ui.screens.state.MainScreenState
-import com.atsz7.rm.roster.ui.viewmodels.MainViewModel
+import com.atsz7.rm.roster.ui.main.screens.state.MainScreenState
+import com.atsz7.rm.roster.ui.main.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
 @Composable

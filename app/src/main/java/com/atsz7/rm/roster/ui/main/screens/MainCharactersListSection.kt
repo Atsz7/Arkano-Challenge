@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.screens
+package com.atsz7.rm.roster.ui.main.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

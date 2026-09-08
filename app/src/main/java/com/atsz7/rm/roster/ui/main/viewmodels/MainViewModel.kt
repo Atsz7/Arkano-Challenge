@@ -1,15 +1,16 @@
-package com.atsz7.rm.roster.ui.viewmodels
+package com.atsz7.rm.roster.ui.main.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.atsz7.rm.roster.domain.usecases.DownloadCharactersUseCase
 import com.atsz7.rm.roster.domain.usecases.GetCharactersUseCase
-import com.atsz7.rm.roster.ui.screens.state.MainScreenState
+import com.atsz7.rm.roster.ui.main.screens.state.MainScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -33,6 +34,9 @@ class MainViewModel @Inject constructor(
             isError -> MainScreenState.Error
             else -> MainScreenState.Success(characters, isRefreshing)
         }
+    }.catch { ex ->
+        Log.e(javaClass.name, ex.message, ex)
+        emit(MainScreenState.Error)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(
