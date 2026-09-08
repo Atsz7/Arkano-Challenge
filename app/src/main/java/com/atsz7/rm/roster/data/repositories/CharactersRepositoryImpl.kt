@@ -23,6 +23,10 @@ class CharactersRepositoryImpl @Inject constructor(
         }
 
     override suspend fun downloadCharacters() {
+
+        // Clearing database
+        charactersDao.deleteAll()
+
         val characters = (MIN_PAGES_TO_DOWNLOAD..MAX_PAGES_TO_DOWNLOAD).flatMap { page ->
             delay(timeMillis = DOWNLOAD_DELAY)
             downloadPage(page)

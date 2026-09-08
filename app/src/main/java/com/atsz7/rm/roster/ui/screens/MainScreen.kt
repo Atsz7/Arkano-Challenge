@@ -1,8 +1,10 @@
 package com.atsz7.rm.roster.ui.screens
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,36 +16,39 @@ import com.atsz7.rm.roster.ui.viewmodels.MainViewModel
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val mainState by mainViewModel.mainState.collectAsStateWithLifecycle()
-    MainScreen(mainState)
+    MainScreen(
+        mainState = mainState,
+        onRefresh = mainViewModel::onRefresh
+    )
 }
 
 @Composable
-private fun MainScreen(mainState: MainScreenState) {
+private fun MainScreen(mainState: MainScreenState, onRefresh: () -> Unit) {
+
+    val isRefreshing = (mainState as? MainScreenState.Success)?.isRefreshing ?: false
 
     Scaffold(
         topBar = { MainTopBar() }
     ) { innerPadding ->
 
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(RMRosterTheme.dimens.mediumSize)
+        PullToRefreshBox(
+            modifier = Modifier.padding(innerPadding),
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh
         ) {
-            when (mainState) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(RMRosterTheme.dimens.mediumSize)
+            ) {
+                when (mainState) {
 
-                MainScreenState.Idle, MainScreenState.Loading -> {
-                    // TODO: Use pull to refresh indicator here.
+                    MainScreenState.Error -> {
+                        mainErrorSection(onRetryClick = onRefresh)
+                    }
+
+                    is MainScreenState.Success -> charactersListSection(mainState.characters)
                 }
-
-                MainScreenState.Error -> {
-                    mainErrorSection(
-                        onRetryClick = {
-                            // TODO: Call refresh method here.
-                        }
-                    )
-                }
-
-                is MainScreenState.Success -> charactersListSection(mainState.characters)
             }
         }
     }
