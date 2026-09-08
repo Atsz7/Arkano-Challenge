@@ -1,4 +1,4 @@
-package com.atsz7.rm.roster.ui.theme
+package com.atsz7.rm.roster.common.ui.theme
 
 import android.app.Activity
 import android.os.Build
