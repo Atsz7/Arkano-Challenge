@@ -3,6 +3,7 @@ package com.atsz7.rm.roster.ui.main.screens
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -14,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atsz7.rm.roster.common.ui.theme.RMRosterTheme
+import com.atsz7.rm.roster.domain.model.Character
 import com.atsz7.rm.roster.ui.main.screens.state.MainScreenState
 import com.atsz7.rm.roster.ui.main.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -55,21 +57,32 @@ private fun MainScreen(mainState: MainScreenState, onRefresh: () -> Unit) {
             isRefreshing = isRefreshing,
             onRefresh = onRefresh
         ) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(RMRosterTheme.dimens.mediumSize)
-            ) {
-                when (mainState) {
+            MainContent(
+                listState = listState,
+                characters = (mainState as? MainScreenState.Success)?.characters,
+                isError = mainState is MainScreenState.Error,
+                onRetryClick = onRefresh
+            )
+        }
+    }
+}
 
-                    MainScreenState.Error -> {
-                        mainErrorSection(onRetryClick = onRefresh)
-                    }
-
-                    is MainScreenState.Success -> charactersListSection(mainState.characters)
-                }
-            }
+@Composable
+private fun MainContent(
+    listState: LazyListState,
+    characters: List<Character>?,
+    isError: Boolean,
+    onRetryClick: () -> Unit
+) {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(RMRosterTheme.dimens.mediumSize)
+    ) {
+        when {
+            isError -> mainErrorSection(onRetryClick = onRetryClick)
+            characters != null -> charactersListSection(characters)
         }
     }
 }
